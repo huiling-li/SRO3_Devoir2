@@ -47,7 +47,7 @@ public class Connexion extends HttpServlet {
             out.println("<h1>Hello " + session.getAttribute("login") + "</h1>");
             ((User)session.getAttribute("user")).setStrRoomCreated();
             ((User)session.getAttribute("user")).setStrRoomInvited();
-            out.println(((User)session.getAttribute("user")));
+//            out.println(((User)session.getAttribute("user")));
             out.println("<nav> <ul>");
 //            out.println(" <li>Connected</li>");
             out.println("<li><a href='createRoom.jsp'>Créer un nouveau salon</a></li>");
