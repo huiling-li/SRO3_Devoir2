@@ -1,6 +1,6 @@
 
 /*
-   超级简单 就是退出对话
+   5.超级简单 就是退出对话
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -39,7 +39,7 @@ public class Deconnexion extends HttpServlet {
         //两种方式进入都调用他
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        session.invalidate();//退出对话
+        session.invalidate();//退出对话 下一个用户
         //并打印点话呗
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -54,6 +54,7 @@ public class Deconnexion extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
         }
+        request.getRequestDispatcher("login2.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

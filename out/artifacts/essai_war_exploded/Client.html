@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script type="text/javascript" src="Client.js"></script>
+    <style>
+        #history {
+            display: block;
+            width: 500px;
+            height: 300px;
+        }
+
+        #txtMessage {
+            display: inline-block;
+            width: 300px;
+        }
+
+        #btnSend {
+            display: inline-block;
+            width: 180px;
+        }
+
+        #btnClose {
+            display: block;
+            width: 500px;
+        }
+        #contains{
+            background-color: pink;
+            width: 1000px;
+            height: 700px;
+            margin: auto;
+        }
+        #username{
+            background-color: powderblue;
+            width: 1000px;
+            height: 30px;
+        }
+        #Inchat{
+            background-color: rgb(5, 130, 146);
+            width: 1000px;
+            height: 30px;
+        }
+        #left{
+            background-color: salmon;
+            width: 700px;
+            height: 640px;
+            float: left;
+            position: relative;
+        }
+        #content{
+            background-color: silver;
+            width: 700px;
+            height: 400px;
+            /*display: none;*/
+            visibility: hidden;
+        }
+        #right{
+            background-color: rgb(107, 3, 3);
+            width: 300px;
+            height: 640px;
+            float: right;
+        }
+        #hyList{
+            height: 270px;
+            overflow-y: scroll;
+            background: antiquewhite;
+        }
+        #xtList{
+            height: 270px;
+            overflow-y: scroll;
+            background: antiquewhite;
+        }
+        #input{
+            margin-bottom: 0px;
+            position: absolute;
+            bottom: 0px;
+        }
+        #mes_left{
+            float: left;
+            border: 2px aqua;
+            max-width: 490px;
+        }
+        #mes_right{
+            float: right;
+            border: 2px aqua;
+            max-width: 490px;
+        }
+        #hy{
+            display: block;
+            width: 300px;
+        }
+        textarea {
+            resize: none;
+            border: none;
+            outline: none
+        }
+    </style>
+</head>
+<body>
+<body>
+<script type="text/javascript">
+
+    var item = document.createElement("item");
+    item.innerHTML = "<label>"+session+"</label>"
+</script>
+<div id = "contains">
+    <div id="username"><h3 style="text-align: center;">Room:<span>-online</span></h3></div>
+    <div id="Inchat"></div>
+    <div id="left">
+        <div id="content">
+
+        </div>
+        <div id="input">
+            <textarea type="text" id="input_text" style="width: 695px;height: 200px;"></textarea>
+            <button id="btnSend" style="float: right;">Send message</button>
+            <button id="btnClose">Close connection</button>
+        </div>
+    </div>
+    <div id="right">
+        <p id="hy" style="text-align: center;">UserList</p>
+        <div id="hyList">
+
+        </div>
+    </div>
+</div>
+<!--<textarea id="history" readonly></textarea>-->
+<!--<input id="txtMessage" type="text" />-->
+
+</body>
+</body>
+</html>

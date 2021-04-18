@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+需求：动态输出用户
+想要动态写java代码：jsp
+循环：foreach/if标签循环
+
+创建聊天室
+action跳回到首页（聊天室信息已经加进去了），但其中也要validation
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+    private String id;应该自动生成
+    private String titre;
+    private String desc;
+    private String date;
+    private String duree;//时间获取 自动 过后自动消除？？？倒计时
+    private User creator;也是自动生成 谁调用create谁就是
+
+-->
+
+<html>
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+<script type="text/javascript" src="src.js"></script>
+<form action="RoomManager" method="post">
+<!--    <label> Login </label>-->
+<!--    <input type="text" id="login" name="login"/>-->
+    <input type='hidden' name='login' value=session.getAttribute("login") />
+    <label> Titre </label>
+    <input type="text" id="titre" name="titre"/>
+    <br>
+    <label> Description </label>
+    <input type="text" id="desc" name="desc"/>
+    <br>
+    <label> Duree de validation </label>
+    <input type="text" id="duree" name="duree"/>
+    <br>
+    <label> Inviter vos amis:(séparé par l'espace) </label>
+    <label> amis disponibles: " + session.getAttribute("usersString") + "</label>
+<!--    可能需要表达式-->
+    <input type="text" id="invits" name="invits"/>
+    <!--复选框不写死 根据人变化-->
+<!--    <label><input name="invit" type="checkbox" value="" />香蕉 </label>-->
+<!--    <label><input name="invit" type="checkbox" value="itr.next().getLogin()" />itr.next().getLogin() </label>-->
+
+
+
+<!--    <input type="checkbox" name="admin" value="admin" />-->
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
+
