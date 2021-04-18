@@ -48,7 +48,14 @@ public class Suppression extends HttpServlet {
             out.println(RoomManager.toStrings());
 //            out.println(room1);
 //            out.println(RoomManager.getRoomsTable().get(room1.getId()));
-            out.println(RoomManager.getRoomsTable().remove(room1.getId()-1));//看结果 别忘了减1 打印出来看一下
+            Set<Integer>key1 = RoomManager.getRoomsTable().keySet();//之前被邀请的都删邀请房
+            Iterator<Integer> itr1 = key1.iterator();
+            while (itr1.hasNext()){//id index查一下 不然有坑
+                int index = itr1.next();
+                if (RoomManager.getRoomsTable().get(index).getTitre().equalsIgnoreCase(room1.getTitre()))
+                    RoomManager.getRoomsTable().remove(index);
+            }
+//            out.println(RoomManager.getRoomsTable().remove(room1.getId()-1));//看结果 别忘了减1 打印出来看一下
             //user那边也要剪掉
             //不刷新？？
             User user = (User)session.getAttribute("user");
@@ -65,7 +72,7 @@ public class Suppression extends HttpServlet {
 
 //            RoomManager.getRoomsTable().clear();
             out.println("<h1> Les salons qui restent : </h1>");
-            out.println(RoomManager.getRoomsTable().keySet()+RoomManager.toStrings());  //    不是静态就不能调用？？
+            out.println(RoomManager.toStrings());  //    不是静态就不能调用？？
             out.println("<li><a href='Connexion'>Revient à l'accueil</a></li>");
             out.println("</body>");
             out.println("</html>");
