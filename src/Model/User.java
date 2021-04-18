@@ -81,8 +81,9 @@ public class User {
         Iterator<Integer> itr = keys.iterator();
         while (itr.hasNext()) {
             int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
-            if (roomsInvited.get(index).equals(room)){
+            if (roomsInvited.get(index).getTitre().equalsIgnoreCase(room.getTitre())){
                 roomsInvited.remove(index);
+                setStrRoomInvited();
                 break;
             }
         }
@@ -93,8 +94,9 @@ public class User {
         Iterator<Integer> itr = keys.iterator();
         while (itr.hasNext()) {
             int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
-            if (roomsCreated.get(index).equals(room)){
+            if (roomsCreated.get(index).getTitre().equalsIgnoreCase(room.getTitre())){
                 roomsCreated.remove(index);
+                setStrRoomCreated();
                 break;
             }
         }
@@ -299,7 +301,7 @@ public class User {
             Iterator<Integer> itr = keys.iterator();
             while (itr.hasNext()) {
                 int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
-                this.strRoomInvited += this.roomsInvited.get(index).getTitre()+" ";
+                this.strRoomInvited += this.getRoomsInvited().get(index).getTitre()+" ";
             }
         }
     }
@@ -328,7 +330,8 @@ public class User {
 
     @Override
     public String toString() {
-
+        setStrRoomCreated();
+        setStrRoomInvited();
         return "User{" + "lastName=" + lastName + ", firstName=" + firstName + ""
                 + ", login=" + login  + ", gender=" + gender + ","
                 + " pwd=" + pwd + " invitedroom ="+getStrRoomInvited()+" createdRoom ="+getStrRoomCreated()+'}';
