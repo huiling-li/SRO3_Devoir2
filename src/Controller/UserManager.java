@@ -121,11 +121,12 @@ public class UserManager extends HttpServlet {
 
             Iterator<Integer> itr2 = keys.iterator();//怎么从头再来？
             while(itr2.hasNext()){
+//                usersTable.get(itr2.next()).setStrRoomInvited();
+//                usersTable.get(itr2.next()).setStrRoomCreated();//更新一下
                 out.println("<li>");
                 out.println(usersTable.get(itr2.next()).toString());
                 out.println("</li>");
-//                usersTable.get(itr.next()).setStrRoomInvited();
-//                usersTable.get(itr.next()).setStrRoomCreated();//更新一下
+
             }
 
             out.println("</ol>");

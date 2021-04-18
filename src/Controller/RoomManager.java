@@ -126,9 +126,9 @@ public class RoomManager extends HttpServlet {
             getUser(str).addRoomsInvited(newRoom);//静态方法？？
             getUser(str).setStrRoomInvited();
         }
-
+        newRoom.setStrInvitedUsers();
         who.addRoomsCreated(newRoom);
-        
+
 
 //        request.getRequestDispatcher("Connexion").forward(request,response);//一定要写forward 不然不跳
 

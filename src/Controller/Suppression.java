@@ -53,11 +53,14 @@ public class Suppression extends HttpServlet {
             //不刷新？？
             User user = (User)session.getAttribute("user");
             user.supprimerRoomCreated(room1);
-            Set<Integer>key = room1.getUsersInvited().keySet();
+            user.setStrRoomCreated();//每次变都更新一下
+
+            Set<Integer>key = room1.getUsersInvited().keySet();//被邀请的都删邀请房
             Iterator<Integer> itr = key.iterator();
             while (itr.hasNext()){
                 int index = itr.next();
                 room1.getUsersInvited().get(index).supprimerRoomInvited(room1);
+                room1.getUsersInvited().get(index).setStrRoomInvited();
             }
 
 //            RoomManager.getRoomsTable().clear();

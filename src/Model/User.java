@@ -111,6 +111,7 @@ public class User {
         this.roomsCreated.put(this.roomsCreated.size(),newroom);
 //        this.addStrRoomCreated(newroom);
 //        this.addStrsRoomCreated(newroom);
+        this.setStrRoomCreated();
     }
 
     public void addRoomsInvited(Room newroom)
@@ -118,6 +119,7 @@ public class User {
         this.roomsInvited.put(this.roomsInvited.size(),newroom);
 //        this.addStrRoomInvited(newroom);
 //        this.addStrsRoomInvited(newroom);
+        this.setStrRoomInvited();
     }
 
 
@@ -284,7 +286,7 @@ public class User {
             Iterator<Integer> itr = keys.iterator();
             while (itr.hasNext()) {
                 int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
-                this.strRoomCreated += this.getRoomsCreated().get(index).getTitre()+"+";
+                this.strRoomCreated += this.getRoomsCreated().get(index).getTitre()+" ";
 
             }
         }
@@ -297,7 +299,7 @@ public class User {
             Iterator<Integer> itr = keys.iterator();
             while (itr.hasNext()) {
                 int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
-                this.strRoomInvited += this.roomsInvited.get(index).getTitre()+"+";
+                this.strRoomInvited += this.roomsInvited.get(index).getTitre()+" ";
             }
         }
     }

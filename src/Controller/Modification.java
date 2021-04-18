@@ -28,12 +28,13 @@ public class Modification extends HttpServlet {
     protected void modifierRoom(HttpServletRequest request, HttpServletResponse response)//当然可以自定义方法 在生命周期函数内调用
         //post传输调用这个方法 只要搞几个对象进来干活即可
             throws ServletException, IOException {
+        int ok = -1;
 
         HttpSession session = request.getSession();
 
         response.setContentType("text/html;charset=UTF-8");
 
-        if(((User)session.getAttribute("user")).getRoomsCreated()==null){
+        if(((User)session.getAttribute("user")).getRoomsCreated().isEmpty()==true){
             request.setAttribute("er","Aucun salon disponible à modifier, Veuillez en créer un");
             request.getRequestDispatcher("Connexion").forward(request,response);//顺序！！跳了就拿不到了
         }
@@ -66,6 +67,7 @@ public class Modification extends HttpServlet {
             request.setAttribute("err","Echec :Aucun salon choisi, Veuillez choisir");
             request.getRequestDispatcher("modif.jsp").forward(request,response);//顺序！！跳了就拿不到了
         }
+        else {
         //3.添加成功，说点废话
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {//表单传来新用户的数据 在这里加入UserTable 并显示
@@ -82,10 +84,12 @@ public class Modification extends HttpServlet {
 
             Set<Integer> key = roomModif.getUsersInvited().keySet();//之前邀请的删掉
             Iterator<Integer> itr = key.iterator();
-            while (itr.hasNext()){
+            while (itr.hasNext()) {
                 roomModif.getUsersInvited().get(itr.next()).supprimerRoomInvited(roomModif);
+                roomModif.getUsersInvited().get(itr.next()).setStrRoomInvited();
             }
-            roomModif.modifierRoom(titre,desc,duree,inviteds);//这下总算改完了吧
+
+            roomModif.modifierRoom(titre, desc, duree, inviteds);//这下总算改完了吧
 //            Set<Integer> keys = UserManager.getUsersTable().keySet();//更新信息
 //            //Obtaining iterator over set entries
 //            Iterator<Integer> itr = keys.iterator();
@@ -96,7 +100,7 @@ public class Modification extends HttpServlet {
 //
 
             response.setContentType("text/html;charset=UTF-8");
-            User user = (User)session.getAttribute("user");
+            User user = (User) session.getAttribute("user");
 //            user.supprimerRoomCreated(room1);
 //            Set<Integer>key = roomModif.getUsersInvited().keySet();
 //            Iterator<Integer> itr = key.iterator();
@@ -112,7 +116,7 @@ public class Modification extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
 
-
+        }
         }
     }
 

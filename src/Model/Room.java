@@ -43,14 +43,25 @@ public class Room {
                 ", date='" + date + '\'' +
                 ", duree='" + duree + '\'' +
                 ", creator=" + creator.getLogin() +
-                ", invitedUsers='" + usersInvited + '\'' +
+                ", invitedUsers='" + strInvitedUsers + '\'' +
                 '}';
     }
 
     public int getId() {
         return id;
     }
-    public void modifierRoom(String titre, String desc, String duree,String[] users){
+
+    public void setStrInvitedUsers() {
+        strInvitedUsers="";
+        Set<Integer> keys = usersInvited.keySet();//所有的键的set集合：所有序号
+        Iterator<Integer> itr = keys.iterator();
+        while (itr.hasNext()) {
+            int index = (int) itr.next();
+            strInvitedUsers+=usersInvited.get(index).getLogin()+" ";
+        }
+    }
+
+    public void modifierRoom(String titre, String desc, String duree, String[] users){
         setTitre(titre);
         setDesc(desc);
         setDuree(duree);
@@ -59,7 +70,9 @@ public class Room {
         for (String str :users){
             addUsersInvited(RoomManager.getUser(str));
             RoomManager.getUser(str).addRoomsInvited(this);
+            RoomManager.getUser(str).setStrRoomInvited();
         }
+        setStrInvitedUsers();
 
     }
     public Room(String titre, String desc, String date, String duree, User creator) {
@@ -74,10 +87,10 @@ public class Room {
 //静态方法怎么就不能设置值了呢
     public void addUsersInvited(User user) {
 //        user=user.strip();
-        this.strInvitedUsers += user.getLogin();//不能直接+=因为一开始是null
+//        this.strInvitedUsers += user.getLogin();//不能直接+=因为一开始是null
 //        String[] inviteds = users.split(" ");
 //        Set<Integer> keys = UserManager.getUsersTable().keySet();//所有的键的set集合：所有序号
-        //Obtaining iterator over set entries
+//        Obtaining iterator over set entries
 //        Iterator<Integer> itr = keys.iterator();
 //        while (itr.hasNext()) {
 //            int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
