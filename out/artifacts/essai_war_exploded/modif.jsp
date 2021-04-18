@@ -35,7 +35,7 @@
 <%--    %>--%>
     <br>
     <%//可以取javabean 不用传
-        HttpSession session1 = request.getSession();
+        HttpSession session1 = (HttpSession) request.getSession();
 //        Hashtable<Integer, User> users = (Hashtable<Integer, User>)request.getAttribute("users");
         Hashtable<Integer,Model.Room> rooms = ((User)session1.getAttribute("user")).getRoomsCreated();
         Set<Integer> keys =rooms.keySet();//所有的键的set集合：所有序号

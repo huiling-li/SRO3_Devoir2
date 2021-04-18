@@ -100,6 +100,13 @@ public class UserManager extends HttpServlet {
         //没有新输入用户 就循环下把原来的用户都输出即可
         //从地址栏输入 而不是从login发来表单信息
         //1.这里只能查看 要修改得先valide 表单提交来才行
+        Set<Integer> keys = usersTable.keySet();
+//        //Obtaining iterator over set entries
+//        Iterator<Integer> itr = keys.iterator();
+//        while(itr.hasNext()){
+//            usersTable.get(itr.next()).setStrRoomInvited();
+//            usersTable.get(itr.next()).setStrRoomCreated();//更新一下
+//        }
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -111,19 +118,16 @@ public class UserManager extends HttpServlet {
             out.println("<body>");
             out.println("<h1> Liste des utilisateurs : </h1>");
             out.println("<ol>");
-            out.println("<li>");
-            out.println((String) toString(usersTable));
-            System.out.println(toString(usersTable));
-            out.println("</li>");
 
-            Set<Integer> keys = usersTable.keySet();
-            //Obtaining iterator over set entries
-            Iterator<Integer> itr = keys.iterator();
-            while(itr.hasNext()){
+            Iterator<Integer> itr2 = keys.iterator();//怎么从头再来？
+            while(itr2.hasNext()){
                 out.println("<li>");
-                out.println(usersTable.get(itr.next()).toString());
+                out.println(usersTable.get(itr2.next()).toString());
                 out.println("</li>");
+//                usersTable.get(itr.next()).setStrRoomInvited();
+//                usersTable.get(itr.next()).setStrRoomCreated();//更新一下
             }
+
             out.println("</ol>");
             out.println("</body>");
             out.println("</html>");

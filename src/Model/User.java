@@ -37,8 +37,8 @@ public class User {
     private int id;
     private String role;
     private static int autoIncrement=0;//只是为了id自动加1
-    private static Hashtable<Integer, Room> roomsCreated= new Hashtable<Integer, Room>();
-    private static Hashtable<Integer, Room> roomsInvited= new Hashtable<Integer, Room>();
+    private Hashtable<Integer, Room> roomsCreated= new Hashtable<Integer, Room>();
+    private Hashtable<Integer, Room> roomsInvited= new Hashtable<Integer, Room>();
     private String strsRoomInvited = "";
     private String strsRoomCreated = "";
     private String strRoomInvited = "";
@@ -109,15 +109,15 @@ public class User {
     public void addRoomsCreated(Room newroom) {
 //roomsCreated.put()
         this.roomsCreated.put(this.roomsCreated.size(),newroom);
-        this.addStrRoomCreated(newroom);
-        this.addStrsRoomCreated(newroom);
+//        this.addStrRoomCreated(newroom);
+//        this.addStrsRoomCreated(newroom);
     }
 
     public void addRoomsInvited(Room newroom)
     {
         this.roomsInvited.put(this.roomsInvited.size(),newroom);
-        this.addStrRoomInvited(newroom);
-        this.addStrsRoomInvited(newroom);
+//        this.addStrRoomInvited(newroom);
+//        this.addStrsRoomInvited(newroom);
     }
 
 
@@ -276,35 +276,60 @@ public class User {
 
         return this.strRoomInvited;
     }
+    public void setStrRoomCreated() {
+        strRoomCreated = "";
+        if(roomsCreated.isEmpty()==false) {
+            Set<Integer> keys = this.getRoomsCreated().keySet();//所有的键的set集合：所有序号
+            //Obtaining iterator over set entries
+            Iterator<Integer> itr = keys.iterator();
+            while (itr.hasNext()) {
+                int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
+                this.strRoomCreated += this.getRoomsCreated().get(index).getTitre()+"+";
 
-//    public void setStrsRoomCreated(HttpServletResponse response) {
-//        strsRoomCreated = "";
-//        Set<Integer> keys = this.getRoomsCreated().keySet();//所有的键的set集合：所有序号
-//        //Obtaining iterator over set entries
-//        Iterator<Integer> itr = keys.iterator();
-//        while (itr.hasNext()) {
-//            int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
-//            this.strsRoomCreated += this.getRoomsCreated().get(index);
-//
-//        }
-//    }
-//    public void setStrsRoomInvited(HttpServletResponse response) {//可以更新 一开始一条条加的不行
-//        strsRoomInvited = "";
-//        Set<Integer> keys = this.roomsInvited.keySet();//所有的键的set集合：所有序号
-//        //Obtaining iterator over set entries
-//        Iterator<Integer> itr = keys.iterator();
-//        while (itr.hasNext()) {
-//            int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
-//            this.strsRoomInvited += this.roomsInvited.get(index);
-//        }
-//    }
+            }
+        }
+    }
+    public void setStrRoomInvited() {//可以更新 一开始一条条加的不行
+        strRoomInvited = "";
+        if (roomsInvited.isEmpty()==false) {//为空执行可能会报错
+            Set<Integer> keys = this.roomsInvited.keySet();//所有的键的set集合：所有序号
+            //Obtaining iterator over set entries
+            Iterator<Integer> itr = keys.iterator();
+            while (itr.hasNext()) {
+                int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
+                this.strRoomInvited += this.roomsInvited.get(index).getTitre()+"+";
+            }
+        }
+    }
+
+    public void setStrsRoomCreated() {
+        strsRoomCreated = "";
+        Set<Integer> keys = this.getRoomsCreated().keySet();//所有的键的set集合：所有序号
+        //Obtaining iterator over set entries
+        Iterator<Integer> itr = keys.iterator();
+        while (itr.hasNext()) {
+            int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
+            this.strsRoomCreated += this.getRoomsCreated().get(index);
+
+        }
+    }
+    public void setStrsRoomInvited() {//可以更新 一开始一条条加的不行
+        strsRoomInvited = "";
+        Set<Integer> keys = this.roomsInvited.keySet();//所有的键的set集合：所有序号
+        //Obtaining iterator over set entries
+        Iterator<Integer> itr = keys.iterator();
+        while (itr.hasNext()) {
+            int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
+            this.strsRoomInvited += this.roomsInvited.get(index);
+        }
+    }
 
     @Override
     public String toString() {
 
         return "User{" + "lastName=" + lastName + ", firstName=" + firstName + ""
                 + ", login=" + login  + ", gender=" + gender + ","
-                + " pwd=" + pwd + " invitedroom ="+this.getStrRoomInvited()+" createdRoom ="+this.getStrRoomCreated()+'}';
+                + " pwd=" + pwd + " invitedroom ="+getStrRoomInvited()+" createdRoom ="+getStrRoomCreated()+'}';
     }
 
 

@@ -124,9 +124,11 @@ public class RoomManager extends HttpServlet {
 //                String str = "e";
             newRoom.addUsersInvited(getUser(str));
             getUser(str).addRoomsInvited(newRoom);//静态方法？？
+            getUser(str).setStrRoomInvited();
         }
 
         who.addRoomsCreated(newRoom);
+        
 
 //        request.getRequestDispatcher("Connexion").forward(request,response);//一定要写forward 不然不跳
 
@@ -147,22 +149,24 @@ public class RoomManager extends HttpServlet {
                 out.println(str2);
 //                out.println(getUser(str2).addRoomsInvited(newRoom));
             }
-//            out.println("<br>");
-            out.println(who.getLogin());
-//            out.println("<br>");
-//            out.println(getUser(str));
-            out.println(who.getStrRoomCreated());
-//            out.println("<br>");
-            out.println(who.getStrRoomInvited());
-//            javax.servlet.http.HttpSession session = (javax.servlet.http.HttpSession) request.getSession();
+////            out.println("<br>");
+            out.println(getUser("c"));
+            out.println(getUser("d"));
+////            out.println("<br>");
+////            out.println(getUser(str));
+//            out.println(who.getStrRoomCreated());
+////            out.println("<br>");
+//            out.println(who.getStrRoomInvited());
+////            javax.servlet.http.HttpSession session = (javax.servlet.http.HttpSession) request.getSession();
             out.println("<h1> Un nouveau room est ajouté : </h1>");
-            out.println((User) httpSession.getAttribute("user"));
-            out.println(getUser("e"));
+//            out.println("自己： "+(User) httpSession.getAttribute("user"));
+//            out.println("E: "+getUser("e"));
+//            out.println("C: "+getUser("c"));
             out.println(roomsTable.get(roomsTable.size() - 1).toString());//toString应该是HsshTable自带方法
-            //会打印用户信息（自定义好的 想说的信息）
-            out.println("遍历被邀请的房间：怎么就不能"+((User) httpSession.getAttribute("user")).getRoomsInvited());
-            out.println("<br>");
-            out.println("遍历创建房间：怎么就不能"+((User)httpSession.getAttribute("user")).getRoomsCreated());
+//            //会打印用户信息（自定义好的 想说的信息）
+//            out.println("遍历被邀请的房间：怎么就不能"+((User) httpSession.getAttribute("user")).getRoomsInvited());
+//            out.println("<br>");
+//            out.println("遍历创建房间：怎么就不能"+((User)httpSession.getAttribute("user")).getRoomsCreated());
 
             out.println("<li><a href='Connexion'>Revient à l'accueil</a></li>");
             out.println("</body>");

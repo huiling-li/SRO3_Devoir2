@@ -45,6 +45,8 @@ public class Connexion extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Hello " + session.getAttribute("login") + "</h1>");
+            ((User)session.getAttribute("user")).setStrRoomCreated();
+            ((User)session.getAttribute("user")).setStrRoomInvited();
             out.println(((User)session.getAttribute("user")));
             out.println("<nav> <ul>");
 //            out.println(" <li>Connected</li>");
@@ -52,6 +54,8 @@ public class Connexion extends HttpServlet {
             out.println(" <li><a href='UserManager'>Afficher la liste des utilisateurs</a></li>");//点击会跳转
             out.println(" <li><a href='RoomManager'>Afficher la liste des salons</a></li>");
             out.println(" <li><a href='modif.jsp'>Modifier vos salons crées</a></li>");
+            if(request.getAttribute("er")!=null)
+                out.println(request.getAttribute("er"));
             out.println(" <li><a href='supprimer.jsp'>Supprimer vos salons crées</a></li>");
             out.println(" <li><a href='Deconnexion'>Déconnecter</a></li>");
 
@@ -69,37 +73,38 @@ public class Connexion extends HttpServlet {
             Iterator<Integer> itr2 = keys2.iterator();
 //            String allSalonModif = "";
 //            out.println(" <script type=>");
-//            while (itr.hasNext()) {
+            while (itr.hasNext()) {
 
 //                session.setAttribute("user",RoomManager.getUser(request,response));
                 //html 超链接 传参数 就可以知道是哪个了
 //                String url="jjj";
 //                String Url="Selection?room=<%=r%>";
-
-//                Room r = rooms.get(itr.next());
-//                out.println(" <li><a href='Selection?room="+rooms.get(itr.next()).getTitre()+"'>Veuillez choisir une opération</a></li>");
                 out.println("<ol>");
-//            ((User) session.getAttribute("user")).setStrsRoomCreated(response);
+                Room r = rooms.get(itr.next());
+                out.println(r.toString());
+//                out.println(" <li><a href='Selection?room="+rooms.get(itr.next()).getTitre()+"'>Veuillez choisir une opération</a></li>");
 
-                out.println(((User)session.getAttribute("user")).getStrsRoomCreated());
-                out.println("遍历创建房间：怎么就不能"+((User)session.getAttribute("user")).getRoomsCreated());
+//            ((User) session.getAttribute("user")).setStrsRoomCreated(response);
+//
+//                out.println(((User)session.getAttribute("user")).getStrsRoomCreated());
+//                out.println("遍历创建房间：怎么就不能"+((User)session.getAttribute("user")).getRoomsCreated());
 //                out.println(r.toString());
-                out.println("</ol><br>");
+                out.println("</ol>");
 //                allSalonModif = allSalonModif + r.getTitre() + "\n";
 //                session.setAttribute("room",r);
-//            }
+            }
 //                out.println("</a></li>");
 //            session.setAttribute("modif",allSalonModif);//要更新
 
             out.println("<h1> Liste des salons où vous êtes invité  : </h1>");
             out.println("<ol>");
-//            ((User) session.getAttribute("user")).setStrsRoomInvited(response);
+            ((User) session.getAttribute("user")).setStrsRoomInvited();
               out.println(((User) session.getAttribute("user")).getStrsRoomInvited());
-              out.println("遍历被邀请的房间：怎么就不能"+((User) session.getAttribute("user")).getRoomsInvited());
-//            while (itr2.hasNext()) {
-//                Room ri = roomsInvited.get(itr2.next());
-//                out.println(ri.toString());
-//            }
+//              out.println("遍历被邀请的房间：怎么就不能"+((User) session.getAttribute("user")).getRoomsInvited());
+            while (itr2.hasNext()) {
+                Room ri = roomsInvited.get(itr2.next());
+                out.println(ri.toString());
+            }
             out.println("</ol><br>");
             out.println("</body>");
             out.println("</html>");

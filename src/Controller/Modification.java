@@ -32,7 +32,12 @@ public class Modification extends HttpServlet {
         HttpSession session = request.getSession();
 
         response.setContentType("text/html;charset=UTF-8");
-        String modif = request.getParameter("modif");
+
+        if(((User)session.getAttribute("user")).getRoomsCreated()==null){
+            request.setAttribute("er","Aucun salon disponible à modifier, Veuillez en créer un");
+            request.getRequestDispatcher("Connexion").forward(request,response);//顺序！！跳了就拿不到了
+        }
+        String modif = request.getParameter("modif");//第二次再选就没有 只是第一次的？
         String titre = request.getParameter("titre");
         String desc = request.getParameter("desc");
         String duree = request.getParameter("duree");
@@ -54,6 +59,13 @@ public class Modification extends HttpServlet {
                 request.getRequestDispatcher("modif.jsp").forward(request,response);//顺序！！跳了就拿不到了
             }
         }
+        if(modif==null){
+            request.setAttribute("desc",desc);
+            request.setAttribute("duree",duree);
+            request.setAttribute("invits",inviteds);
+            request.setAttribute("err","Echec :Aucun salon choisi, Veuillez choisir");
+            request.getRequestDispatcher("modif.jsp").forward(request,response);//顺序！！跳了就拿不到了
+        }
         //3.添加成功，说点废话
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {//表单传来新用户的数据 在这里加入UserTable 并显示
@@ -67,7 +79,23 @@ public class Modification extends HttpServlet {
             out.println("<h1> Le salon avant : </h1>");
 //            out.println(TypeName);
             out.println(roomModif.toString());
+
+            Set<Integer> key = roomModif.getUsersInvited().keySet();//之前邀请的删掉
+            Iterator<Integer> itr = key.iterator();
+            while (itr.hasNext()){
+                roomModif.getUsersInvited().get(itr.next()).supprimerRoomInvited(roomModif);
+            }
             roomModif.modifierRoom(titre,desc,duree,inviteds);//这下总算改完了吧
+//            Set<Integer> keys = UserManager.getUsersTable().keySet();//更新信息
+//            //Obtaining iterator over set entries
+//            Iterator<Integer> itr = keys.iterator();
+//            while(itr.hasNext()){
+//                UserManager.getUsersTable().get(itr.next()).setStrRoomInvited();
+//                UserManager.getUsersTable().get(itr.next()).setStrRoomCreated();//更新一下
+//            }
+//
+
+            response.setContentType("text/html;charset=UTF-8");
             User user = (User)session.getAttribute("user");
 //            user.supprimerRoomCreated(room1);
 //            Set<Integer>key = roomModif.getUsersInvited().keySet();

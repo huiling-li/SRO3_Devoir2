@@ -15,23 +15,23 @@ public class Room {
     private String desc;
     private String date;
 
-    public static Hashtable<Integer, User> getUsersInvited() {
+    public  Hashtable<Integer, User> getUsersInvited() {
         return usersInvited;
     }
 
     private String duree;//时间获取
     private User creator;//这俩值在用户输入的时候确定
-    private static Hashtable<Integer, User> usersInvited= new Hashtable<Integer, User>();
-    private static Hashtable<Integer,User> allUsers = new Hashtable<>();
+    private Hashtable<Integer, User> usersInvited= new Hashtable<Integer, User>();
+    private Hashtable<Integer,User> allUsers = new Hashtable<>();
     private String strInvitedUsers="";
 
-    public static Hashtable<Integer, User> getAllUsers() {
+    public  Hashtable<Integer, User> getAllUsers() {
         return allUsers;
     }
 
     public void setAllUsers() {
-        Room.allUsers = this.usersInvited;
-        Room.allUsers.put(allUsers.size(),this.creator);
+        allUsers = this.usersInvited;
+        allUsers.put(allUsers.size(),this.creator);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class Room {
                 ", date='" + date + '\'' +
                 ", duree='" + duree + '\'' +
                 ", creator=" + creator.getLogin() +
-                ", invitedUsers='" + strInvitedUsers + '\'' +
+                ", invitedUsers='" + usersInvited + '\'' +
                 '}';
     }
 
@@ -58,6 +58,7 @@ public class Room {
         strInvitedUsers = "";
         for (String str :users){
             addUsersInvited(RoomManager.getUser(str));
+            RoomManager.getUser(str).addRoomsInvited(this);
         }
 
     }
