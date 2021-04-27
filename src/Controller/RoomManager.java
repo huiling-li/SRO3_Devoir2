@@ -150,8 +150,8 @@ public class RoomManager extends HttpServlet {
 //                out.println(getUser(str2).addRoomsInvited(newRoom));
             }
 ////            out.println("<br>");
-            out.println(getUser("c"));
-            out.println(getUser("d"));
+//            out.println(getUser("c"));
+//            out.println(getUser("d"));
 ////            out.println("<br>");
 ////            out.println(getUser(str));
 //            out.println(who.getStrRoomCreated());
@@ -162,7 +162,7 @@ public class RoomManager extends HttpServlet {
 //            out.println("自己： "+(User) httpSession.getAttribute("user"));
 //            out.println("E: "+getUser("e"));
 //            out.println("C: "+getUser("c"));
-            out.println(roomsTable.get(roomsTable.size() - 1).toString());//toString应该是HsshTable自带方法
+            out.println(roomsTable.get(roomsTable.size() - 1));//toString应该是HsshTable自带方法
 //            //会打印用户信息（自定义好的 想说的信息）
 //            out.println("遍历被邀请的房间：怎么就不能"+((User) httpSession.getAttribute("user")).getRoomsInvited());
 //            out.println("<br>");

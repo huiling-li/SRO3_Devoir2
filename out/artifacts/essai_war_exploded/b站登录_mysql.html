@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+</head>
+<body>
+
+    <form action="loginServlet" method="post" id="loginForm">
+        <!--name用来标识表单元素:给后台 id是前台用的-->
+        name:<input type="text" name="uname" id="uname"/><br>
+        password:<input type="password" name="upwd" id="upwd"><br>
+        <!--button默认类型是submit 这里改成普通按钮-->
+        <button type="button" onclick="checkLogin()">se connecter</button>
+        <span id="msg" style="color: red;font-size: 12px;"></span>
+    </form>
+</body>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+/*
+获取文本框 密码框的值
+ */
+//点击登录按钮 会执行三步！！！（就是这样的）：获取值 看是否为空 提交表单
+    function checkLogin() {
+        //#是id选择器 val和（）都要,不要忘！！！
+        var uname = $("#uname").val();
+        var upwd = $("#upwd").val();
+        //||是并且  判断是否为空还是封装一下为妙
+
+        //1.是否为空
+        if (isEmpty(uname)) {
+            //取/赋值的方法 分类讨论span标签用html 别的用val
+            $("#msg").html("username ne peut pas être vide!")
+        }
+        if (isEmpty(upwd)) {
+            $("#msg").html("password ne peut pas être vide!")
+        }
+        //如果不为空 提交表单即可
+        $("#loginForm").submit();
+    }
+    function isEmpty(str){
+            if(str==null||str.trim()==""){
+                return true;
+            }
+            return false;
+    }
+
+
+</script>
+</html>

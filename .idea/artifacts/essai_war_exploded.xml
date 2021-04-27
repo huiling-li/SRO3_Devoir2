@@ -7,6 +7,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="essai" />
         </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$USER_HOME$/eclipse-workspace/apache-tomcat-8.0.53/lib/websocket-api.jar" />
+          <element id="library" level="project" name="websocket-api" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/mysql-connector-java-5.1.39-bin.jar" />
+        </element>
       </element>
     </root>
   </artifact>
