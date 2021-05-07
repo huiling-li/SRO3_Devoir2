@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chatroom</title>
+</head>
+<style>
+    #contains{
+        background-color: pink;
+        width: 1000px;
+        height: 700px;
+        margin: auto;
+    }
+    #username{
+        background-color: powderblue;
+        width: 1000px;
+        height: 30px;
+    }
+    #Inchat{
+        background-color: rgb(5, 130, 146);
+        width: 1000px;
+        height: 30px;
+    }
+    #left{
+        background-color: salmon;
+        width: 700px;
+        height: 640px;
+        float: left;
+        position: relative;
+    }
+    #content{
+        background-color: silver;
+        width: 700px;
+        height: 400px;
+        /*display: none;*/
+        visibility: hidden;
+    }
+    #right{
+        background-color: rgb(107, 3, 3);
+        width: 300px;
+        height: 640px;
+        float: right;
+    }
+    #hyList{
+        height: 270px;
+        overflow-y: scroll;
+        background: antiquewhite;
+    }
+    #xtList{
+        height: 270px;
+        overflow-y: scroll;
+        background: antiquewhite;
+    }
+    #input{
+        margin-bottom: 0px;
+        position: absolute;
+        bottom: 0px;
+    }
+    #mes_left{
+        float: left;
+        border: 2px aqua;
+        max-width: 490px;
+    }
+    #mes_right{
+        float: right;
+        border: 2px aqua;
+        max-width: 490px;
+    }
+    #hy{
+        display: block;
+        width: 300px;
+    }
+    textarea {
+        resize: none;
+        border: none;
+        outline: none
+    }
+</style>
+<body>
+<div id = "contains">
+    <div id="username"><h3 style="text-align: center;">username<span>-en line</span></h3></div>
+    <div id="Inchat"></div>
+    <div id="left">
+        <div id="content">
+
+        </div>
+        <div id="input">
+            <textarea type="text" id="input_text" style="width: 695px;height: 200px;"></textarea>
+            <button id="submit" style="float: right;">envoyer</button>
+        </div>
+    </div>
+    <div id="right">
+        <p id="hy" style="text-align: center;">list d'amis</p>
+        <a style="text-align: center; display: block;" onclick='showChat(paul)'>paul</a> <br>
+        <div id="hyList">
+
+        </div>
+        <p id="xt" style="text-align: center">message</p>
+        <div id="xtList">
+
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    var toName;
+    var username;
+    //点击好友名称展示相关消息
+    function showChat(name){
+        toName = name;
+        //现在聊天框
+        $("#content").html("");
+        $("#content").css("visibility","visible");
+        $("#Inchat").html("en train de communiquer avec"+toName);
+        //从sessionStorage中获取历史信息
+        var chatData = sessionStorage.getItem(toName);
+        if (chatData != null){
+            $("#content").html(chatData);
+        }
+    }
+    $(function () {
+        $.ajax({
+            url:"getUsername",
+            success:function (res) {
+                username = res;
+            },
+            async:false //同步请求，只有上面好了才会接着下面
+        });
+        //établir websocket connexion
+        //获取host解决后端获取httpsession的空指针异常
+        var host = window.location.host;
+        var ws = new WebSocket("ws://"+host+"/chat");
+        ws.onopen = function (evt) {
+            $("#username").html("<h3 style=\"text-align: center;\">user："+ username +"<span>-en line</span></h3>");
+        }
+        //reception des messages
+        ws.onmessage = function (evt) {
+            //reception des messages
+            var dataStr = evt.data;
+            var res = JSON.parse(dataStr);
+
+            if(res.system){
+                //1.montrer les list d'amis
+                //2.系统广播的展示
+                //此处声明的变量是调试时命名的，可以直接合并
+                var names = res.message;
+                var userlistStr = "";
+                var broadcastListStr = "";
+                var temp01 = "<a style=\"text-align: center; display: block;\" onclick='showChat(\"";
+                var temp03 = "\")'>";
+                var temp04 = "chy</a></br>";
+                var temp = "";
+                for (var name of names){
+                    if (name != username){
+                        temp = temp01 + name + temp03 + name + temp04;
+                        userlistStr = userlistStr + temp;
+                        broadcastListStr += "<p style='text-align: center'>"+ name +"get on line</p>";
+                    }
+                }
+                //montrer les user_lists
+                $("#hyList").html(userlistStr);
+                $("#xtList").html(broadcastListStr);
+
+            }else {
+
+                var str = "<span id='mes_left'>"+ res.message +"</span></br>";
+                if (toName === res.fromName) {
+                    $("#content").append(str);
+                }
+                var chatData = sessionStorage.getItem(res.fromName);
+                if (chatData != null){
+                    str = chatData + str;
+                }
+                //stocker les messages
+                sessionStorage.setItem(res.fromName,str);
+            };
+        }
+        ws.onclose = function () {
+            $("#username").html("<h3 style=\"text-align: center;\">user："+ username +"<span>-pas en line</span></h3>");
+        }
+
+        //envoyer les messages
+        $("#submit").click(function () {
+            //1.récupérer le message saisi
+            var data = $("#input_text").val();
+            //2.vider le context text
+            $("#input_text").val("");
+            var json = {"toName": toName ,"message": data};
+            //montrer le message saisi
+            var str = "<span id='mes_right'>"+ data +"</span></br>";
+            $("#content").append(str);
+
+            var chatData = sessionStorage.getItem(toName);
+            if (chatData != null){
+                str = chatData + str;
+            }
+            sessionStorage.setItem(toName,str);
+            //3.envoyers les données à serveur
+            ws.send(JSON.stringify(json));
+        })
+    })
+</script>
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
+<script>
+    /*https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json*/
+    L2Dwidget.init({ "model": { jsonPath:
+                "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+            "scale": 1 }, "display": { "position": "right", "width": 110, "height": 150,
+            "hOffset": 0, "vOffset": -20 }, "mobile": { "show": true, "scale": 0.5 },
+        "react": { "opacityDefault": 0.8, "opacityOnHover": 0.1 } });
+</script>
+</html>

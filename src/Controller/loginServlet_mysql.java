@@ -32,5 +32,5 @@
 */
 package Controller;
 
-public class loginServlet {
+public class loginServlet_mysql {
 }

@@ -31,16 +31,15 @@
     <br>
     <label> les salons possibles à supprimer:  </label>
     <br>
-    <%//可以取javabean 不用传
+    <%
         HttpSession session1 = (HttpSession) request.getSession();
 //        Hashtable<Integer, User> users = (Hashtable<Integer, User>)request.getAttribute("users");
         Hashtable<Integer,Model.Room> rooms = ((User)session1.getAttribute("user")).getRoomsCreated();
-        Set<Integer> keys =rooms.keySet();//所有的键的set集合：所有序号
+        Set<Integer> keys =rooms.keySet();
         //Obtaining iterator over set entries
         Iterator<Integer> itr = keys.iterator();
         while (itr.hasNext()) {
-            int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
-            //可以取javabean 不用传
+            int index = (int) itr.next();
 //            if(UserManager.getUsersTable().get(index).getLogin()!=session.getAttribute("login"))
             out.println("<input name=\"suppr\" type=\"radio\" value="+rooms.get(index).getTitre()+" />"+rooms.get(index).getTitre()+" ");
 

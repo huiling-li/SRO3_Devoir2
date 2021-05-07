@@ -1,14 +1,14 @@
 package com;
 import com.model.Users;
-import com.dao.UserDao;
+import com.dao.UserDao_mysql;
 public class RunMain {
     public static void main(String[] args) {
-        UserDao userDao = new UserDao();
+        UserDao_mysql userDaoMysql = new UserDao_mysql();
         Users users = new Users();
         users.setUname("chy");//单引号不行
         users.setUserId(1);
         users.setUpwd("123456");
-        userDao.insertUsers(users);
+        userDaoMysql.insertUsers(users);
 
 
     }

@@ -25,8 +25,8 @@ import java.util.Set;
 public class Suppression extends HttpServlet {
 
 
-    protected void supprimerRoom(HttpServletRequest request, HttpServletResponse response)//当然可以自定义方法 在生命周期函数内调用
-        //post传输调用这个方法 只要搞几个对象进来干活即可
+    protected void supprimerRoom(HttpServletRequest request, HttpServletResponse response)
+
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
@@ -34,9 +34,9 @@ public class Suppression extends HttpServlet {
         String suppr = request.getParameter("suppr");
         Room room1 = RoomManager.getRoom(suppr);
 
-        //3.添加成功，说点废话
+        //3.affiche le message
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {//表单传来新用户的数据 在这里加入UserTable 并显示
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -48,21 +48,19 @@ public class Suppression extends HttpServlet {
             out.println(RoomManager.toStrings());
 //            out.println(room1);
 //            out.println(RoomManager.getRoomsTable().get(room1.getId()));
-            Set<Integer>key1 = RoomManager.getRoomsTable().keySet();//之前被邀请的都删邀请房
+            Set<Integer>key1 = RoomManager.getRoomsTable().keySet();//supprimer les salons invités pour les invités
             Iterator<Integer> itr1 = key1.iterator();
-            while (itr1.hasNext()){//id index查一下 不然有坑
+            while (itr1.hasNext()){
                 int index = itr1.next();
                 if (RoomManager.getRoomsTable().get(index).getTitre().equalsIgnoreCase(room1.getTitre()))
                     RoomManager.getRoomsTable().remove(index);
             }
-//            out.println(RoomManager.getRoomsTable().remove(room1.getId()-1));//看结果 别忘了减1 打印出来看一下
-            //user那边也要剪掉
-            //不刷新？？
+//            out.println(RoomManager.getRoomsTable().remove(room1.getId()-1));
             User user = (User)session.getAttribute("user");
             user.supprimerRoomCreated(room1);
-            user.setStrRoomCreated();//每次变都更新一下
+            user.setStrRoomCreated();//mise à jour les salons crees
 
-            Set<Integer>key = room1.getUsersInvited().keySet();//之前被邀请的都删邀请房
+            Set<Integer>key = room1.getUsersInvited().keySet();
             Iterator<Integer> itr = key.iterator();
             while (itr.hasNext()){
                 int index = itr.next();
@@ -72,7 +70,7 @@ public class Suppression extends HttpServlet {
 
 //            RoomManager.getRoomsTable().clear();
             out.println("<h1> Les salons qui restent : </h1>");
-            out.println(RoomManager.toStrings());  //    不是静态就不能调用？？
+            out.println(RoomManager.toStrings());
             out.println("<li><a href='Connexion'>Revient à l'accueil</a></li>");
             out.println("</body>");
             out.println("</html>");

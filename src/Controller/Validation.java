@@ -1,7 +1,5 @@
-//1.从新建用户页面来，看看符不符合规范
-// 是UserManager的前一步 只是优化 不是必须的
-//就是看看有没有漏填 不符合规范的 有没有重名啊什么的
-//不符合就不能新建用户
+//1.vient de Nouveau Utilisateur pour valider l'ajout d'un nouveau Utilisateur
+
 package Controller;
 
         import java.io.IOException;
@@ -30,24 +28,24 @@ public class Validation extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        boolean valid = true;//生效否
-        //也是获取表单的值
+        boolean valid = true;//indique est-ce qu'il est valide ou pas
+        //rcupere les valeurs transfert d'un formulaire
         response.setContentType("text/html;charset=UTF-8");
         String firstName = request.getParameter("User first name");
         String lastName = request.getParameter("User familly name");
         String mail = request.getParameter("User email");
         String gender = request.getParameter("gender");
         String password = request.getParameter("User password");
-        //1.不规范1：有一项没填 提示要填
+        //1.anomalie1：s'il y a un champ pas saisi
         if (firstName == null || lastName == null || mail == null || password == null) {
             System.out.println("Champs non renseignés");
-            //并跳回到新建用户页面
+            //on redirige à la page NouveauUtilisateur
             RequestDispatcher rd = request.getRequestDispatcher("NouveauUtilisateur.html");
             rd.forward(request, response);
             valid = false;
-            //此时都不valide呀
+
         }
-        //2.不规范2：填了个屁也不行啊
+        //2.anomalie2：on a saisi rien
         else if ("".equals(firstName) || "".equals(lastName) || "".equals(mail) || "".equals(password)) {
             System.out.println("Champs vides");
             RequestDispatcher rd = request.getRequestDispatcher("NouveauUtilisateur.html");
@@ -55,25 +53,20 @@ public class Validation extends HttpServlet {
             valid = false;
 
         }
-
-
-
-
-
-        //4.这好像是后面的事了：validator有值 就说明已经是第一次有重名的情况 在决定继不继续了
+        //4.
         if (request.getParameter("validator") != null) {// des doublons ont été détectés et l'utilisateur à valider son choix
             if ("oui".equals(request.getParameter("valider"))) {// on insėre les doublons
                 valid = true;
             } else {
                 valid = false;
-                //不继续的话就还是回到前面咯
+                //on redirige à la page NouveauUtilisateur
                 RequestDispatcher rd = request.getRequestDispatcher("NouveauUtilisateur.html");//abandonner l'insertion
                 rd.forward(request, response);
             }
 
-            //3.这才是前传：validator==null还没经历重名抉择
-            //这时候填的符合规范了 尝试给你新建一个用户 但却发现用户列表里已经有重名用户了
-            //就让你抉择要不要覆盖了
+            //3.
+            //il y a pas d'anomalie, mais il y a un compte existant qui porte le meme nom et prenom
+            //vous choisissez est-ce que vous voulez le recouvrir ou non
         } else if (UserManager.getUsersTable().containsValue(new User(lastName, firstName))) {
             valid = false;
             try (PrintWriter out = response.getWriter()) {
@@ -84,11 +77,11 @@ public class Validation extends HttpServlet {
                 out.println("<title>Servlet Validation</title>");
                 out.println("</head>");
                 out.println("<body>");
-                out.println("<h1>Un utilisateur avec les m�mes nom et pr�nom existe d�j�. Voulez-vous l'enregistrer ?  </h1>");
+                out.println("<h1>Un utilisateur avec les m�mes nom et pr�nom existe deja. Voulez-vous l'enregistrer ?  </h1>");
                 out.println("<form method='POST' action='Validation'>");
                 out.println("Oui <input type='radio' name='valider' value='oui' /> ");
                 out.println("Nom <input type='radio' name='valider' value='nom' />");
-                //这些值因为之前都写过了就不用再写了 隐藏起来 等以后使用即可
+                //masquer et stocker les valeurs pour l'utilisation ultérieur
                 out.println("<input type='hidden' name='User first name' value='" + firstName + "'/>");
                 out.println("<input type='hidden' name='User familly name' value='" + lastName + "'/>");
                 out.println("<input type='hidden' name='User email' value='" + mail + "'/>");
@@ -96,14 +89,13 @@ public class Validation extends HttpServlet {
                 out.println("<input type='hidden' name='User password' value='" + password + "' />");
                 out.println("<br>");
                 out.println("<input type ='submit' value='Envoyer' name='validator' />");
-                //提交的动作就叫'validator' 因为是选oui 还是non 嘛
                 out.println("</form>");
                 out.println("</body>");
                 out.println("</html>");
             }
 
         }
-        if (valid) {//5.如果valide了就加到user管理器里
+        if (valid) {//5.une fois valide,onl'ajoute à UserManager
             RequestDispatcher rd = request.getRequestDispatcher("UserManager");
             rd.forward(request, response);
         }

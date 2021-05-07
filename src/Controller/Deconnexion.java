@@ -36,11 +36,10 @@ public class Deconnexion extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //两种方式进入都调用他
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        session.invalidate();//退出对话 下一个用户
-        //并打印点话呗
+        session.invalidate();//quitte la session
+        //affiche les messages
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");

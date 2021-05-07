@@ -25,15 +25,14 @@ import java.util.Set;
 public class Modification extends HttpServlet {
 
 
-    protected void modifierRoom(HttpServletRequest request, HttpServletResponse response)//当然可以自定义方法 在生命周期函数内调用
-        //post传输调用这个方法 只要搞几个对象进来干活即可
+    protected void modifierRoom(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int ok = 1;
 
         HttpSession session = request.getSession();
 //
 //        response.setContentType("text/html;charset=UTF-8");
-//                try (PrintWriter out = response.getWriter()) {//表单传来新用户的数据 在这里加入UserTable 并显示
+//                try (PrintWriter out = response.getWriter()) {
 //                    /* TODO output your page here. You may use following sample code. */
 //                    out.println("<!DOCTYPE html>");
 //                    out.println("<html>");
@@ -42,30 +41,28 @@ public class Modification extends HttpServlet {
 //                }
         if(((User)session.getAttribute("user")).getRoomsCreated().isEmpty()==true){
             request.setAttribute("er","Aucun salon disponible à modifier, Veuillez en créer un");
-            request.getRequestDispatcher("Connexion").forward(request,response);//顺序！！跳了就拿不到了
+            request.getRequestDispatcher("Connexion").forward(request,response);
             ok = 0;
         }
-        String modif = request.getParameter("modif");//第二次再选就没有 只是第一次的？
+        String modif = request.getParameter("modif");
         String titre = request.getParameter("titre");
         String desc = request.getParameter("desc");
         String duree = request.getParameter("duree");
         String[] inviteds = request.getParameterValues("invit");
 //        String TypeName = request.getParameter("TypeName");
 //        System.out.println(TypeName);
-        //2.添加一个用户（值和用户map对应 跟字典一样）被valide过就放心加
 //        User who = RoomManager.getUser(request, response);
-
 //        Room room = (Room) session.getAttribute("room");
 //        Room room1 = RoomManager.getRoom(modif);
         for(Room room:RoomManager.getRoomsTable().values()){
             if(room.getTitre().equalsIgnoreCase(titre)){
-//                request.getRequestDispatcher("Connexion").forward(request,response);//一定要写forward 不然不跳 表单提交 重新提交
+//                request.getRequestDispatcher("Connexion").forward(request,response);
                 request.setAttribute("err","Echec :titre existe déjà, Veuillez changer");
                 request.setAttribute("desc",desc);
                 request.setAttribute("duree",duree);
                 request.setAttribute("invits",inviteds);
                 ok = 0;
-                request.getRequestDispatcher("modif.jsp").forward(request,response);//顺序！！跳了就拿不到了
+                request.getRequestDispatcher("modif.jsp").forward(request,response);
             }
         }
          if(modif==null){
@@ -74,12 +71,12 @@ public class Modification extends HttpServlet {
             request.setAttribute("duree",duree);
             request.setAttribute("invits",inviteds);
             request.setAttribute("err","Echec :Aucun salon choisi, Veuillez choisir");
-            request.getRequestDispatcher("modif.jsp").forward(request,response);//顺序！！跳了就拿不到了
+            request.getRequestDispatcher("modif.jsp").forward(request,response);
         }
         if(ok==1) {
-        //3.添加成功，说点废话
+        //3.si reussie, affiche les messages
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {//表单传来新用户的数据 在这里加入UserTable 并显示
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -92,20 +89,20 @@ public class Modification extends HttpServlet {
             Room roomModif = RoomManager.getRoom(modif);
             out.println(roomModif.toString());
 
-            Set<Integer> key = roomModif.getUsersInvited().keySet();//之前邀请的删掉
+            Set<Integer> key = roomModif.getUsersInvited().keySet();
             Iterator<Integer> itr = key.iterator();
             while (itr.hasNext()) {
                 roomModif.getUsersInvited().get(itr.next()).supprimerRoomInvited(roomModif);
 //                roomModif.getUsersInvited().get(itr.next()).setStrRoomInvited();
             }
 
-            roomModif.modifierRoom(titre, desc, duree, inviteds);//这下总算改完了吧
-//            Set<Integer> keys = UserManager.getUsersTable().keySet();//更新信息
+            roomModif.modifierRoom(titre, desc, duree, inviteds);
+//            Set<Integer> keys = UserManager.getUsersTable().keySet();
 //            //Obtaining iterator over set entries
 //            Iterator<Integer> itr = keys.iterator();
 //            while(itr.hasNext()){
 //                UserManager.getUsersTable().get(itr.next()).setStrRoomInvited();
-//                UserManager.getUsersTable().get(itr.next()).setStrRoomCreated();//更新一下
+//                UserManager.getUsersTable().get(itr.next()).setStrRoomCreated();
 //            }
 //
 
@@ -120,9 +117,8 @@ public class Modification extends HttpServlet {
 //            }
 
             out.println("<h1> Le salon a été modifié comme suivant : </h1>");
-            out.println(roomModif.toString());//toString应该是HsshTable自带方法
+            out.println(roomModif.toString());
             out.println("<li><a href='Connexion'>Revient à l'accueil</a></li>");
-            //会打印用户信息（自定义好的 想说的信息）
             out.println("</body>");
             out.println("</html>");
 
@@ -144,7 +140,7 @@ public class Modification extends HttpServlet {
         HttpSession session = request.getSession();
         if(((User)session.getAttribute("user")).getRoomsCreated().isEmpty()==true){
             request.setAttribute("er","Aucun salon disponible à modifier, Veuillez en créer un");
-            request.getRequestDispatcher("Connexion").forward(request,response);//顺序！！跳了就拿不到了
+            request.getRequestDispatcher("Connexion").forward(request,response);
         }
         modifierRoom(request, response);
     }

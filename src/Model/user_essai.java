@@ -1,7 +1,7 @@
 package Model;
 
 public class user_essai {
-    private Integer userId;//主键
+    private Integer userId;
     private String uname;
     private String upwd;
 

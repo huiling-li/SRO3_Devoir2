@@ -34,16 +34,15 @@
 <%--        out.println(request.getSession().getAttribute("modif"));--%>
 <%--    %>--%>
     <br>
-    <%//可以取javabean 不用传
+    <%
         HttpSession session1 = (HttpSession) request.getSession();
 //        Hashtable<Integer, User> users = (Hashtable<Integer, User>)request.getAttribute("users");
         Hashtable<Integer,Model.Room> rooms = ((User)session1.getAttribute("user")).getRoomsCreated();
-        Set<Integer> keys =rooms.keySet();//所有的键的set集合：所有序号
+        Set<Integer> keys =rooms.keySet();
         //Obtaining iterator over set entries
         Iterator<Integer> itr = keys.iterator();
         while (itr.hasNext()) {
-            int index = (int) itr.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
-            //可以取javabean 不用传
+            int index = (int) itr.next();
 //            if(UserManager.getUsersTable().get(index).getLogin()!=session.getAttribute("login"))
                 out.println("<input name=\"modif\" type=\"radio\" value="+rooms.get(index).getTitre()+" />"+rooms.get(index).getTitre()+" ");
 
@@ -67,17 +66,15 @@
     <br>
     <label> Les amis disponibles:  </label>
     <br>
-    <%//可以取javabean 不用传
+    <%
 //        Hashtable<Integer, User> users = (Hashtable<Integer, User>)request.getAttribute("users");
-        Set<Integer> key = UserManager.getUsersTable().keySet();//所有的键的set集合：所有序号
+        Set<Integer> key = UserManager.getUsersTable().keySet();
         //Obtaining iterator over set entries
         Iterator<Integer> it = key.iterator();
         while (it.hasNext()) {
-            int index = (int) it.next();//2.遍历序号 从index找User 再找Login 看看等不等于输入的username
-            //可以取javabean 不用传
+            int index = (int) it.next();
             if(UserManager.getUsersTable().get(index).getLogin()!=session.getAttribute("login"))
                 out.println("<input name=\"invit\" type=\"checkbox\" value="+UserManager.getUsersTable().get(index).getLogin()+" />"+UserManager.getUsersTable().get(index).getLogin()+" ");
-
         }
 //        out.println(request.getSession().getAttribute("usersString"));
     %>

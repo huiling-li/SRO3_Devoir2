@@ -34,7 +34,7 @@ public class UserManager extends HttpServlet {
     }
 
     protected String toString(Hashtable<Integer, User> usersTable){
-        Set<Integer> keys = usersTable.keySet();//所有的键的set集合：所有序号
+        Set<Integer> keys = usersTable.keySet();//tous les ids d'UserTable
         String allUsers="";
         //Obtaining iterator over set entries
         Iterator<Integer> itr = keys.iterator();

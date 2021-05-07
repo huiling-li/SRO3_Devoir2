@@ -18,7 +18,7 @@ public class Selection extends HttpServlet {
 
     public void show(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-//        session.setAttribute("room",);在上一步记录是哪个房间
+//        session.setAttribute("room",);
         response.setContentType("text/html;charset=UTF-8");
         try (
                 PrintWriter out = response.getWriter()) {

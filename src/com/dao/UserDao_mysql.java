@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UserDao {
+public class UserDao_mysql {
     public void insertUsers(Users users){
         try {
             Class.forName("com.mysql.jdbc.Driver");

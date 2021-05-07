@@ -37,13 +37,13 @@ public class ChatServer {
     /**
      * On maintient toutes les sessions utilisateurs dans une collection.
      */
-    private Hashtable<String, Session> sessions = new Hashtable<>();//直接把所有session存起来
+    private Hashtable<String, Session> sessions = new Hashtable<>();//stocke tous les sessions
 
     /**
      * Cette m�thode est d�clench�e � chaque connexion d'un utilisateur.
      */
     @OnOpen
-    public void open(Session session, @PathParam("pseudo") String pseudo, EndpointConfig config) {//有什么区别
+    public void open(Session session, @PathParam("pseudo") String pseudo, EndpointConfig config) {
         this.session = session;
         HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
         this.httpSession = httpSession;
@@ -51,17 +51,17 @@ public class ChatServer {
         onlineUsers.put(username,this);
         sendMessage( "Admin >>> Connection established for " + pseudo );
         session.getUserProperties().put( "pseudo", pseudo );
-        sessions.put( session.getId(), session );//加新会话
-        this.room = (Room)httpSession.getAttribute("room");//点链接时传过来 每次都更新
+        sessions.put( session.getId(), session );//ajout d'une nouvelle session
+        this.room = (Room)httpSession.getAttribute("room");
     }
 
     /**
      * Cette m�thode est d�clench�e � chaque d�connexion d'un utilisateur.
      */
     @OnClose
-    public void close(Session session) {//这个会话知道的
+    public void close(Session session) {
         String pseudo = (String) session.getUserProperties().get( "pseudo" );
-        sessions.remove( session.getId() );//移除会话
+        sessions.remove( session.getId() );//supprime la session
         sendMessage( "Admin >>> Connection closed for " + pseudo );
     }
 
@@ -78,10 +78,10 @@ public class ChatServer {
      */
     @OnMessage
     public void handleMessage(String message, Session session) {
-        String pseudo = (String) session.getUserProperties().get( "pseudo" );//你是谁
+        String pseudo = (String) session.getUserProperties().get( "pseudo" );
         String fullMessage = pseudo + " >>> " + message;
 
-        sendMessage( fullMessage );//发送数据 加到对话框
+        sendMessage( fullMessage );
     }
 
     /**
@@ -99,8 +99,8 @@ public class ChatServer {
                 e.printStackTrace();
             }
         }
-//            // On envoie le message � tout le monde.
-//        for( Session session : room.getAllUsers(). ) {//遍历 广播
+//            // On envoie le message a tout le monde.
+//        for( Session session : room.getAllUsers(). ) {//broadcast
 //            try {
 //                session.getBasicRemote().sendText( fullMessage );
 //            } catch( Exception exception ) {
